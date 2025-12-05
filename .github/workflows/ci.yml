@@ -1,0 +1,25 @@
+name: CI con AutoCommit
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  test-and-update-readme:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Install dependencies
+        run: pip install pytest
+      - name: Run tests
+        run: python test_main.py
+      - name: Update README
+        run: python update_readme.py
+      - name: Auto-commit README
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Actualización automática del README por CI
